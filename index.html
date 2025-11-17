@@ -5,7 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yunqi的作品集</title>
     <style>
-        body { font-family: 'Arial', sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        body {
+            /* 正文使用思源黑体，干净现代 */
+            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f9f9f9; /*稍微调亮一点背景*/
+            margin: 0;
+            padding: 0;
+            color: #333;
+            line-height: 1.6; /* 增加行高，让阅读更像读诗，不拥挤 */
+        }
+        /* 标题使用思源宋体，充满人文气息 */
+        h1, h2, h3, .card-title {
+            font-family: 'Noto Serif SC', serif;
+            font-weight: 700;
+        }
+        
+        /* 专门调整大标题 */
+        header h1 {
+            letter-spacing: 2px; /* 字间距变宽，更有电影片头的呼吸感 */
+            font-weight: 400; /* 不用太粗，优雅一点 */
+        }
         header { background-color: #333; color: white; padding: 20px; text-align: center; }
         .container { width: 90%; max-width: 1000px; margin: 20px auto; }
         .intro { text-align: center; margin-bottom: 40px; color: #555; }
@@ -92,6 +111,9 @@
 
 <header>
     <h1>Yunqi Portfolio</h1>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
 </header>
 
 <div class="container">
@@ -171,5 +193,6 @@
 </body>
 
 </html>
+
 
 
