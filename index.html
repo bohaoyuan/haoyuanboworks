@@ -74,7 +74,7 @@
 
 <div class="container">
     <div class="intro">
-        <p>你好，这里是我的个人作品展示。包含我的短片、虚拟制作及更多项目。</p>
+        <p id="typing-text"></p>
     </div>
 
     <div class="gallery">
@@ -101,7 +101,31 @@
         </div>
     </div>
 </div>
+<script>
+    // 1. 定义剧本内容
+    const text = "你好，我是 Yunqi。这里是我的个人作品展示，包含我的短片、虚拟制作及更多项目。";
+    
+    // 2. 找到那个演员 (通过 ID)
+    const element = document.getElementById("typing-text");
+    
+    let index = 0; // 目前念到第几个字
+    
+    function typeWriter() {
+        // 如果还有字没念完
+        if (index < text.length) {
+            // 把当前的字追加到页面上
+            element.innerHTML += text.charAt(index);
+            index++; // 准备念下一个字
+            
+            // 3. 设置节奏 (每 100 毫秒念一个字)
+            setTimeout(typeWriter, 100); 
+        }
+    }
 
+    // 4. 开机！(页面加载完成后开始执行)
+    window.onload = typeWriter;
+</script>
 </body>
 
 </html>
+
