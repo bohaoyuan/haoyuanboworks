@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yunqi的作品集</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; }
+        header { background-color: #333; color: white; padding: 20px; text-align: center; }
+        .container { width: 90%; max-width: 1000px; margin: 20px auto; }
+        .intro { text-align: center; margin-bottom: 40px; color: #555; }
+        
+        /* 作品网格布局 */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); }
+        .card-img {
+            width: 100%;
+            height: 160px;
+            background-color: #ddd;
+            background-size: cover;
+            background-position: center;
+        }
+        /* 模拟图片占位 */
+        .img-1 { background-image: url('https://picsum.photos/id/10/400/300'); } 
+        .img-2 { background-image: url('https://picsum.photos/id/20/400/300'); }
+        .img-3 { background-image: url('https://picsum.photos/id/30/400/300'); }
+
+        .card-content { padding: 15px; }
+        .card-title { margin: 0 0 10px 0; font-size: 18px; }
+        .card-desc { font-size: 14px; color: #666; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Yunqi Portfolio</h1>
+</header>
+
+<div class="container">
+    <div class="intro">
+        <p>你好，这里是我的个人作品展示。包含我的短片、虚拟制作及更多项目。</p>
+    </div>
+
+    <div class="gallery">
+        <div class="card">
+            <div class="card-img img-1"></div>
+            <div class="card-content">
+                <h3 class="card-title">虚拟制作项目 A</h3>
+                <p class="card-desc">使用 UE5 制作的短片场景演示。</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-img img-2"></div>
+            <div class="card-content">
+                <h3 class="card-title">短片《夜》</h3>
+                <p class="card-desc">担任导演与编剧的叙事短片。</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-img img-3"></div>
+            <div class="card-content">
+                <h3 class="card-title">技术美术测试</h3>
+                <p class="card-desc">关于粒子系统的渲染测试。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
