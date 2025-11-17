@@ -8,10 +8,11 @@
         body {
             /* 正文使用思源黑体，干净现代 */
             font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #f9f9f9; /*稍微调亮一点背景*/
+            background-color: #1a1a1a; 
+            /* 文字变成灰白色，看着不累眼 */
+            color: #e0e0e0;
             margin: 0;
             padding: 0;
-            color: #333;
             line-height: 1.6; /* 增加行高，让阅读更像读诗，不拥挤 */
         }
         /* 标题使用思源宋体，充满人文气息 */
@@ -103,11 +104,13 @@
             gap: 20px;
         }
         .card {
-            background: white;
+            /* 卡片背景变成深一点的灰色 */
+            background: #2d2d2d;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 基础阴影 */
-            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; /* 添加平滑过渡 */
+            /* 阴影设为黑色，更深邃 */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
         }
         .card:hover {
             transform: translateY(-8px); /* 鼠标悬停时上浮 8 像素 */
@@ -127,8 +130,15 @@
         .img-3 { background-image: url('https://picsum.photos/id/30/400/300'); }
 
         .card-content { padding: 15px; }
-        .card-title { margin: 0 0 10px 0; font-size: 18px; }
-        .card-desc { font-size: 14px; color: #666; }
+       .card-title { 
+            margin: 0 0 10px 0; 
+            font-size: 18px; 
+            color: #fff; /* 标题变纯白 */
+        }
+        .card-desc { 
+            font-size: 14px; 
+            color: #aaa; /* 描述变灰色 */
+        }
         .card-img {
             width: 100%;
             height: 160px;
@@ -237,6 +247,7 @@
 </body>
 
 </html>
+
 
 
 
