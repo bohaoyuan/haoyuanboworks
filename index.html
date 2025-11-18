@@ -4,275 +4,309 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yunqi的作品集</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
+    
     <style>
+        /* --- 全局基础样式 --- */
         body {
-            /* 正文使用思源黑体，干净现代 */
-            font-family: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background-color: #1a1a1a; 
-            /* 文字变成灰白色，看着不累眼 */
-            color: #e0e0e0;
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #1a1a1a; /* 暗黑背景 */
+            color: #e0e0e0; /* 灰白文字 */
             margin: 0;
             padding: 0;
-            line-height: 1.6; /* 增加行高，让阅读更像读诗，不拥挤 */
+            line-height: 1.6;
         }
-        /* 标题使用思源宋体，充满人文气息 */
+
+        /* 标题字体设置 */
         h1, h2, h3, .card-title {
             font-family: 'Noto Serif SC', serif;
             font-weight: 700;
         }
-        
-       /* --- 电影级头图样式 (Hero Section) --- */
+
+        /* --- 顶部头图 (Hero Section) --- */
         header {
-            /* 1. 设置背景图 (这里我暂时用了一张Unsplash上的星空图，稍后教你换成你自己的) */
+            /* 你的星空背景图 */
             background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1920&auto=format&fit=crop');
-            
-            /* 2. 让图片铺满，不重复 */
             background-size: cover;
             background-position: center;
-            
-            /* 3. 高度设置：设置为屏幕高度的 60%，更有视觉冲击力 */
-            height: 60vh; 
-            
-            /* 4. 布局：让文字死死地居中 */
+            height: 40vh; /* 调整为 40% 高度，更像电影 Banner */
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
             color: white;
-            margin-bottom: 40px; /* 让它和下面的卡片保持距离 */
-        }
-
-        .header-content {
-            /* 给文字加一点入场动画 */
-            animation: fadeIn 2s ease-in-out;
+            margin-bottom: 40px;
         }
 
         header h1 {
-            font-size: 3.5rem; /* 字体超大 */
+            font-size: 2.5rem;
             margin: 0;
-            letter-spacing: 4px; /* 宽字距，电影感 */
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5); /* 文字阴影，防止背景太花看不清 */
+            letter-spacing: 4px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
             font-weight: 400;
+            animation: fadeIn 2s ease-in-out; /* 入场动画 */
         }
 
         .subtitle {
-            font-family: 'Noto Serif SC', serif; /* 用宋体写诗句 */
-            font-size: 1.2rem;
-            margin-top: 20px;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.1rem;
+            margin-top: 15px;
             font-weight: 300;
             opacity: 0.9;
             letter-spacing: 1px;
+            animation: fadeIn 3s ease-in-out;
         }
 
-        /* 简单的淡入动画 */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        /* 筛选按钮样式 */
+
+        /* --- 容器与筛选按钮 --- */
+        .container {
+            width: 90%;
+            max-width: 1200px; /* 拓宽舞台 */
+            margin: 0 auto 60px auto; /* 底部留白 */
+        }
+
+        .filter-container {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
         .filter-btn {
             border: none;
             outline: none;
-            padding: 10px 20px;
-            background-color: #e0e0e0; /* 默认灰色 */
+            padding: 8px 24px;
+            background-color: #333; /* 按钮底色深灰 */
+            color: #aaa;
             cursor: pointer;
-            border-radius: 20px; /* 胶囊形状 */
+            border-radius: 50px;
             margin: 5px;
             font-size: 14px;
             transition: 0.3s;
-            font-weight: bold;
-            color: #333;
+            font-weight: 500;
+            font-family: 'Noto Sans SC', sans-serif;
         }
+
         .filter-btn:hover {
-            background-color: #333; /* 鼠标放上去变黑 */
-            color: white;
+            background-color: #e0e0e0; /* 悬停变亮 */
+            color: #1a1a1a;
         }
-        .filter-btn.active {
-            background-color: #333; /* 选中状态也是黑 */
-            color: white;
-        }
-        /* 作品网格布局 */
+
+        /* --- 作品网格 (核心布局) --- */
         .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center; /* 自动居中 */
+            gap: 30px;
         }
-        /* 作品网格布局 */
-        /* 修复后的网格布局 */
-        .gallery {
-            display: flex; /* 改用 Flex 布局，更容易控制居中 */
-            flex-wrap: wrap; /* 允许换行 */
-            justify-content: center; /* 关键！让所有卡片水平居中 */
-            gap: 30px; /* 卡片之间的间距加大一点，更透气 */
-        }
-        
-        /* 配合 Flex 布局，我们需要固定一下卡片的宽度 */
+
+        /* --- 卡片样式 --- */
         .card {
-            width: 300px; /* 给卡片一个固定宽度 */
-            /* 之前的样式保持不变 */
+            width: 300px; /* 固定宽度 */
             background: #2d2d2d;
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 10px 20px rgba(0,0,0,0.5);
             transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+            position: relative; /* 为了布局稳定 */
         }
+
         .card:hover {
-            transform: translateY(-8px); /* 鼠标悬停时上浮 8 像素 */
-            box-shadow: 0 12px 20px rgba(0,0,0,0.25); /* 阴影变大变深 */
-            cursor: pointer; /* 鼠标变成小手，提示可点击 */
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            cursor: pointer;
         }
+
         .card-img {
             width: 100%;
-            height: 160px;
-            background-color: #ddd;
+            height: 220px; /* 电影海报比例 */
+            background-color: #333;
             background-size: cover;
             background-position: center;
         }
-        /* 模拟图片占位 */
-        .img-1 { background-image: url('https://picsum.photos/id/10/400/300'); }
-        .img-2 { background-image: url('https://picsum.photos/id/20/400/300'); }
-        .img-3 { background-image: url('https://picsum.photos/id/30/400/300'); }
 
-        .card-content { padding: 15px; }
-       .card-title { 
-            margin: 0 0 10px 0; 
-            font-size: 18px; 
-            color: #fff; /* 标题变纯白 */
-        }
-        .card-desc { 
-            font-size: 14px; 
-            color: #aaa; /* 描述变灰色 */
-        }
-        .card-img {
+        /* 模拟图片 (记得换成你自己的本地图片!) */
+        /* 这里暂时用 Unsplash 占位，你可以改成 url('1.jpg') */
+        .img-ue5 { background-image: url('https://images.unsplash.com/photo-1614726365723-49cfae96c692?q=80&w=800&auto=format&fit=crop'); }
+        .img-film { background-image: url('https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=800&auto=format&fit=crop'); }
+        .img-tech { background-image: url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=800&auto=format&fit=crop'); }
+        .img-edit { background-image: url('https://images.unsplash.com/photo-1574717024653-61fd2cf4d44e?q=80&w=800&auto=format&fit=crop'); }
+        .img-magic { background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop'); }
+
+        .card-content { padding: 20px; }
+        .card-title { margin: 0 0 10px 0; font-size: 18px; color: #fff; }
+        .card-desc { font-size: 13px; color: #999; margin: 0; }
+
+        /* --- 视频弹窗样式 (黑屋子) --- */
+        .video-modal {
+            display: none; /* 平时隐藏 */
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 160px;
-            background-color: #ddd;
-            background-size: cover;
-            background-position: center;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.95); /* 极黑背景 */
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            animation: fadeIn 0.3s;
         }
-        /* 模拟图片占位 */
-        .img-1 { background-image: url('https://picsum.photos/id/10/400/300'); } 
-        .img-2 { background-image: url('https://picsum.photos/id/20/400/300'); }
-        .img-3 { background-image: url('https://picsum.photos/id/30/400/300'); }
 
-        .card-content { padding: 15px; }
-        .card-title { margin: 0 0 10px 0; font-size: 18px; }
-        .card-desc { font-size: 14px; color: #666; }
+        .video-container {
+            width: 80%;
+            max-width: 1000px;
+            aspect-ratio: 16 / 9;
+            background: black;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
     </style>
 </head>
+
 <body>
-<header>
-    <div class="header-content">
-        <h1>Yunqi Portfolio</h1>
-        <p class="subtitle">未来的关键 · 在于充满希望的勇气与无尽的心力</p>
-    </div>
-</header>
-<header>
-    <h1>Yunqi Portfolio</h1>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500&family=Noto+Serif+SC:wght@400;700&display=swap" rel="stylesheet">
-</header>
 
-<div class="container">
-    <div class="intro">
-        <div class="filter-container" style="text-align: center; margin-bottom: 30px;">
-        <button class="filter-btn" onclick="filterSelection('all')">全部</button>
-        <button class="filter-btn" onclick="filterSelection('film')">导演短片</button>
-        <button class="filter-btn" onclick="filterSelection('ue5')">UE5虚拟制作</button>
-        <button class="filter-btn" onclick="filterSelection('editing')">影像剪辑</button>
-        <button class="filter-btn" onclick="filterSelection('magic')">魔幻艺术</button>
-    </div>
-        <p id="typing-text"></p>
-    </div>
+    <header>
+        <div class="header-content">
+            <h1>Yunqi Portfolio</h1>
+            <p class="subtitle">未来的关键 · 在于充满希望的勇气与无尽的心力</p>
+        </div>
+    </header>
 
-    <div class="gallery">
-        <div class="card" data-category="ue5">
-            <div class="card-img img-1"></div>
-            <div class="card-content">
-                <h3 class="card-title">虚拟制作项目 A</h3>
-                <p class="card-desc">使用 UE5 制作的短片场景演示。</p>
-            </div>
-        </div>
-        <div class="card" data-category="film">
-            <div class="card-img img-2"></div>
-            <div class="card-content">
-                <h3 class="card-title">短片《夜》</h3>
-                <p class="card-desc">担任导演与编剧的叙事短片。</p>
-            </div>
-        </div>
-        <div class="card" data-category="ue5">
-            <div class="card-img img-3"></div>
-            <div class="card-content">
-                <h3 class="card-title">技术美术测试</h3>
-                <p class="card-desc">关于粒子系统的渲染测试。</p>
-            </div>
-        <div class="card" data-category="editing">
-            <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1574717024653-61fd2cf4d44e?q=80&w=800&auto=format&fit=crop');"></div>
-            <div class="card-content">
-                <h3 class="card-title">视觉节奏实验</h3>
-                <p class="card-desc">蒙太奇与色彩情绪的探索练习。</p>
-            </div>
+    <div class="container">
+        
+        <div style="text-align: center; margin-bottom: 40px; height: 20px; color: #888;">
+            <p id="typing-text"></p>
         </div>
 
-        <div class="card" data-category="magic">
-            <div class="card-img" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=800&auto=format&fit=crop');"></div>
-            <div class="card-content">
-                <h3 class="card-title">近景魔术研习</h3>
-                <p class="card-desc">探索手法、错误引导与心理学的艺术。</p>
-            </div>
+        <div class="filter-container">
+            <button class="filter-btn" onclick="filterSelection('all')">全部</button>
+            <button class="filter-btn" onclick="filterSelection('film')">导演短片</button>
+            <button class="filter-btn" onclick="filterSelection('ue5')">UE5虚拟制作</button>
+            <button class="filter-btn" onclick="filterSelection('editing')">影像剪辑</button>
+            <button class="filter-btn" onclick="filterSelection('magic')">魔幻艺术</button>
         </div>
+
+        <div class="gallery">
             
+            <div class="card" data-category="ue5">
+                <div class="card-img img-ue5"></div>
+                <div class="card-content">
+                    <h3 class="card-title">虚拟制作项目 A</h3>
+                    <p class="card-desc">使用 UE5 制作的短片场景演示。</p>
+                </div>
+            </div>
+
+            <div class="card" data-category="film" onclick="playVideo('BV1Yb411X75s')">
+                <div class="card-img img-film"></div>
+                <div class="card-content">
+                    <h3 class="card-title">短片《夜》</h3>
+                    <p class="card-desc">担任导演与编剧的叙事短片。(点击播放示例)</p>
+                </div>
+            </div>
+
+            <div class="card" data-category="ue5">
+                <div class="card-img img-tech"></div>
+                <div class="card-content">
+                    <h3 class="card-title">技术美术测试</h3>
+                    <p class="card-desc">关于粒子系统的渲染测试。</p>
+                </div>
+            </div>
+
+            <div class="card" data-category="editing">
+                <div class="card-img img-edit"></div>
+                <div class="card-content">
+                    <h3 class="card-title">视觉节奏实验</h3>
+                    <p class="card-desc">蒙太奇与色彩情绪的探索练习。</p>
+                </div>
+            </div>
+
+            <div class="card" data-category="magic">
+                <div class="card-img img-magic"></div>
+                <div class="card-content">
+                    <h3 class="card-title">近景魔术研习</h3>
+                    <p class="card-desc">探索手法、错误引导与心理学的艺术。</p>
+                </div>
+            </div>
+
         </div>
     </div>
-</div>
-<script>
-    // 1. 定义剧本内容
-    const text = "你好，我是 Yunqi。这里是我的个人作品展示，包含我的短片、虚拟制作及更多项目。";
-    
-    // 2. 找到那个演员 (通过 ID)
-    const element = document.getElementById("typing-text");
-    
-    let index = 0; // 目前念到第几个字
-    
-    function typeWriter() {
-        // 如果还有字没念完
-        if (index < text.length) {
-            // 把当前的字追加到页面上
-            element.innerHTML += text.charAt(index);
-            index++; // 准备念下一个字
-            
-            // 3. 设置节奏 (每 100 毫秒念一个字)
-            setTimeout(typeWriter, 100); 
-        }
-    }
 
-    // 4. 开机！(页面加载完成后开始执行)
-    window.onload = typeWriter;
-    // --- 优化版：导演筛选逻辑 ---
-    function filterSelection(category) {
-        var cards = document.getElementsByClassName("card");
-        for (var i = 0; i < cards.length; i++) {
-            var cardCategory = cards[i].getAttribute("data-category");
-            
-            if (category == 'all' || cardCategory == category) {
-                // 如果符合条件，让它显示
-                cards[i].parentElement.style.display = "grid"; // 恢复布局
-                cards[i].style.display = "block"; 
-            } else {
-                // 如果不符合，让它彻底消失，不占位置
-                cards[i].style.display = "none";
+    <div id="video-modal" class="video-modal" onclick="closeVideo()">
+        <div class="video-container" onclick="event.stopPropagation()">
+            </div>
+    </div>
+
+    <script>
+        // --- 打字机特效 ---
+        const text = "你好，我是 Yunqi。这里是我的个人作品展示，包含我的短片、虚拟制作及更多项目。";
+        const element = document.getElementById("typing-text");
+        let index = 0;
+        
+        function typeWriter() {
+            if (index < text.length) {
+                element.innerHTML += text.charAt(index);
+                index++;
+                setTimeout(typeWriter, 80); 
             }
         }
-    }
-</script>
+        window.onload = typeWriter;
+
+        // --- 筛选逻辑 ---
+        function filterSelection(category) {
+            var cards = document.getElementsByClassName("card");
+            for (var i = 0; i < cards.length; i++) {
+                var cardCategory = cards[i].getAttribute("data-category");
+                if (category == 'all' || cardCategory == category) {
+                    cards[i].style.display = "block"; 
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+        }
+
+        // --- 视频播放逻辑 (支持 B站 & MP4) ---
+        function playVideo(source) {
+            if (!source) return; // 如果没链接，啥也不做
+
+            var modal = document.getElementById("video-modal");
+            var videoContainer = document.querySelector(".video-container");
+            videoContainer.innerHTML = ""; // 清空旧视频
+
+            if (source.startsWith("BV")) {
+                // === B站模式 (净化版) ===
+                var bUrl = "https://player.bilibili.com/player.html?bvid=" + source + "&high_quality=1&danmaku=0&autoplay=1";
+                var iframe = document.createElement("iframe");
+                iframe.src = bUrl;
+                iframe.style.width = "100%";
+                iframe.style.height = "100%";
+                iframe.frameBorder = "0";
+                iframe.allow = "autoplay; fullscreen";
+                videoContainer.appendChild(iframe);
+            } else {
+                // === MP4 模式 ===
+                var video = document.createElement("video");
+                video.src = source;
+                video.controls = true;
+                video.style.width = "100%";
+                video.style.height = "100%";
+                video.style.outline = "none";
+                video.autoplay = true;
+                videoContainer.appendChild(video);
+            }
+            
+            modal.style.display = "flex"; // 显示窗口
+        }
+        
+        function closeVideo() {
+            var modal = document.getElementById("video-modal");
+            var videoContainer = document.querySelector(".video-container");
+            modal.style.display = "none";
+            videoContainer.innerHTML = ""; // 销毁视频，停止声音
+        }
+    </script>
 </body>
-
 </html>
-
-
-
-
-
-
-
