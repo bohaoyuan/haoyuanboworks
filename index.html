@@ -12,37 +12,91 @@
         /* ================= 1. 全局基础样式 ================= */
         body {
             font-family: 'Noto Sans SC', sans-serif;
-            background-color: #121212; /* 极致深黑 */
+            background-color: #0a0a0a; /* 比之前更黑 */
             color: #e0e0e0;
             margin: 0;
             padding: 0;
             line-height: 1.8;
+            overflow-x: hidden; /* 防止粒子跑出去出现滚动条 */
         }
         h1, h2, h3, .card-title { font-family: 'Noto Serif SC', serif; font-weight: 700; }
         
-        /* ================= 2. 电影级头图 (Hero) ================= */
+        /* ================= 2. 动态粒子头图 (Interactive Header) ================= */
         header {
-            /* 背景图：你可以换成你自己的星空或UE5渲染图 */
-            background-image: linear-gradient(to bottom, rgba(0,0,0,0.3), #121212), url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1920&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            height: 45vh;
+            position: relative;
+            height: 50vh; /*稍微高一点*/
             display: flex;
             justify-content: center;
             align-items: center;
             text-align: center;
+            color: white;
             margin-bottom: 40px;
+            overflow: hidden;
         }
-        .header-content { animation: fadeIn 2s ease-out; }
-        header h1 { font-size: 3rem; margin: 0; letter-spacing: 4px; text-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        
+        /* 画布：用于绘制动态星空 */
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* 放在最底层 */
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+        }
+
+        .header-content { 
+            position: relative; 
+            z-index: 1; /* 浮在星星上面 */
+            animation: fadeIn 2s ease-out; 
+        }
+
+        /* --- 故障艺术字特效 (Glitch Effect) --- */
+        .glitch {
+            font-size: 3.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            position: relative;
+            text-shadow: 0.05em 0 0 #00fffc, -0.03em -0.04em 0 #fc00ff,
+                        0.025em 0.04em 0 #fffc00;
+            animation: glitch 725ms infinite;
+            letter-spacing: 4px;
+        }
+
+        .glitch span {
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 #00fffc, -0.03em -0.04em 0 #fc00ff, 0.025em 0.04em 0 #fffc00; }
+            15% { text-shadow: 0.05em 0 0 #00fffc, -0.03em -0.04em 0 #fc00ff, 0.025em 0.04em 0 #fffc00; }
+            16% { text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.035em 0 #fc00ff, -0.05em -0.05em 0 #fffc00; }
+            49% { text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.035em 0 #fc00ff, -0.05em -0.05em 0 #fffc00; }
+            50% { text-shadow: 0.05em 0.035em 0 #00fffc, 0.03em 0 0 #fc00ff, 0 -0.04em 0 #fffc00; }
+            99% { text-shadow: 0.05em 0.035em 0 #00fffc, 0.03em 0 0 #fc00ff, 0 -0.04em 0 #fffc00; }
+            100% { text-shadow: -0.05em 0 0 #00fffc, -0.025em -0.04em 0 #fc00ff, -0.04em -0.025em 0 #fffc00; }
+        }
+        /* 这种闪烁太疯狂了？我们稍微调慢一点，只在hover时疯狂，或者用一个微弱的版本 */
+        /* 修改：让它平时静止，偶尔闪烁，或者为了阅读体验，只保留微弱的RGB分离 */
+        .glitch {
+            animation: none; /* 默认不闪，太累眼 */
+            text-shadow: 2px 2px 0px rgba(0, 255, 252, 0.3), -2px -2px 0px rgba(252, 0, 255, 0.3);
+        }
+        .header-content:hover .glitch {
+            animation: glitch 500ms infinite; /* 鼠标放上去才疯狂闪烁！互动感！ */
+            cursor: default;
+        }
+
         .subtitle { font-family: 'Noto Serif SC', serif; font-size: 1.1rem; margin-top: 15px; opacity: 0.8; letter-spacing: 2px; font-weight: 300; }
 
         /* ================= 3. 筛选按钮 & 容器 ================= */
-        .container { width: 90%; max-width: 1200px; margin: 0 auto 80px auto; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto 80px auto; position: relative; z-index: 2; }
         .filter-container { text-align: center; margin-bottom: 50px; }
         .filter-btn {
             border: 1px solid #333;
-            background: transparent;
+            background: rgba(255,255,255,0.05); /* 半透明 */
             color: #888;
             padding: 8px 25px;
             margin: 0 5px;
@@ -50,8 +104,9 @@
             cursor: pointer;
             transition: 0.3s;
             font-size: 14px;
+            backdrop-filter: blur(5px);
         }
-        .filter-btn:hover, .filter-btn.active { background: #e0e0e0; color: #000; border-color: #e0e0e0; }
+        .filter-btn:hover, .filter-btn.active { background: #e0e0e0; color: #000; border-color: #e0e0e0; box-shadow: 0 0 15px rgba(255,255,255,0.5); }
 
         /* ================= 4. 作品网格 (Gallery) ================= */
         .gallery { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; }
@@ -62,13 +117,20 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             position: relative;
             cursor: pointer;
+            border: 1px solid #333;
         }
-        .card:hover { transform: translateY(-10px); z-index: 10; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .card:hover { 
+            transform: translateY(-10px) scale(1.02); 
+            z-index: 10; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); 
+            border-color: #666;
+        }
         
-        .card-img { height: 200px; background-color: #333; background-size: cover; background-position: center; }
+        .card-img { height: 200px; background-color: #333; background-size: cover; background-position: center; transition: 0.5s;}
+        .card:hover .card-img { filter: brightness(1.2); }
         
         /* 占位图 (记得换成你GitHub里的真实图片 url('xxx.jpg')) */
         .img-ue5 { background-image: url('https://images.unsplash.com/photo-1614726365723-49cfae96c692?q=80&w=600'); }
@@ -87,6 +149,7 @@
             padding: 4px 10px; border-radius: 4px;
             font-size: 10px; text-transform: uppercase; letter-spacing: 1px;
             backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
         /* ================= 5. 视频弹窗 (Video Modal) ================= */
@@ -94,18 +157,20 @@
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.95); z-index: 2000;
             justify-content: center; align-items: center; cursor: pointer;
+            backdrop-filter: blur(10px);
         }
         .video-container {
             width: 85%; max-width: 1100px; aspect-ratio: 16 / 9;
             background: #000; box-shadow: 0 0 50px rgba(255,255,255,0.1);
         }
 
-        /* ================= 6. 文章阅读弹窗 (Article Modal) [NEW] ================= */
+        /* ================= 6. 文章阅读弹窗 (Article Modal) ================= */
         .article-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: rgba(0, 0, 0, 0.85); z-index: 2000;
             justify-content: center; align-items: center;
             opacity: 0; transition: opacity 0.3s;
+            backdrop-filter: blur(5px);
         }
         .article-wrapper {
             background: #1a1a1a; width: 90%; max-width: 750px; height: 90%;
@@ -113,11 +178,9 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.8);
             transform: translateY(30px); transition: transform 0.3s;
             display: flex; flex-direction: column;
+            border: 1px solid #333;
         }
-        .article-content {
-            padding: 60px 50px; overflow-y: auto; color: #ccc;
-        }
-        /* 文章内部排版 */
+        .article-content { padding: 60px 50px; overflow-y: auto; color: #ccc; }
         .article-content h2 { color: #fff; font-size: 28px; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 20px;}
         .article-content .meta { color: #666; font-size: 13px; margin-bottom: 40px; font-family: monospace; }
         .article-content p { font-size: 16px; line-height: 1.8; margin-bottom: 20px; }
@@ -125,12 +188,8 @@
         .article-content h3 { color: #fff; margin-top: 40px; font-size: 20px; }
         .script-block { font-family: 'Courier New', monospace; background: #222; padding: 20px; border-left: 3px solid #666; color: #aaa; font-size: 14px; }
         
-        .close-btn {
-            position: absolute; top: 15px; right: 25px; font-size: 30px; color: #555; cursor: pointer; transition: 0.2s;
-        }
+        .close-btn { position: absolute; top: 15px; right: 25px; font-size: 30px; color: #555; cursor: pointer; transition: 0.2s; }
         .close-btn:hover { color: #fff; }
-        
-        /* 滚动条隐藏 */
         .article-content::-webkit-scrollbar { width: 6px; }
         .article-content::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
 
@@ -142,8 +201,10 @@
 <body>
 
 <header>
+    <canvas id="canvas-container"></canvas>
+    
     <div class="header-content">
-        <h1>Yunqi Portfolio</h1>
+        <h1 class="glitch">Yunqi Portfolio</h1>
         <p class="subtitle">未来的关键 · 在于充满希望的勇气与无尽的心力</p>
     </div>
 </header>
@@ -181,7 +242,7 @@
             </div>
         </div>
 
-        <div class="card" data-category="editing" onclick="playVideo('BV1GJ411x7')">
+        <div class="card" data-category="editing" onclick="playVideo('BV1GJ411x7h7')">
             <div class="tag">视频 Video</div>
             <div class="card-img img-edit"></div>
             <div class="card-content">
@@ -203,52 +264,107 @@
 </div>
 
 <div id="video-modal" class="video-modal" onclick="closeVideo()">
-    <div class="video-container" onclick="event.stopPropagation()">
-        </div>
+    <div class="video-container" onclick="event.stopPropagation()"></div>
 </div>
 
 <div id="article-modal" class="article-modal" onclick="closeArticle()">
     <div class="article-wrapper" onclick="event.stopPropagation()">
         <span class="close-btn" onclick="closeArticle()">&times;</span>
-        <div id="article-content-area" class="article-content">
-            </div>
+        <div id="article-content-area" class="article-content"></div>
     </div>
 </div>
 
 <div style="display: none;">
-
     <div id="article-film-night">
         <h2>短片《夜》：导演阐述</h2>
         <div class="meta">ROLE: Director / Screenwriter | DATE: Oct 2025</div>
         <img src="https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=800" alt="剧照">
-        <p><strong>核心概念：</strong> 在这个项目中，我试图探索“沉默”作为一种叙事语言的力量。整部短片只有三句台词，其余全部依靠镜头调度和环境音来推动情绪。</p>
-        <h3>剧本节选 (Excerpt)</h3>
+        <p><strong>核心概念：</strong> 在这个项目中，我试图探索“沉默”作为一种叙事语言的力量...</p>
+        <h3>剧本节选</h3>
         <div class="script-block">
             SCENE 1. 街道 - 夜 (EXT)<br><br>
             雨还在下。霓虹灯的光晕在积水中晕开。<br>
-            男人站在电话亭旁，手中的硬币被捏得发热。<br>
-            他举起手，迟疑了片刻，最终还是放下了话筒。<br><br>
-            音效：<br>
-            (只有雨声，和远处救护车的鸣笛)
+            (此处为剧本内容)...
         </div>
-        <p>这是我最满意的一场戏，也是拍摄难度最大的一场。为了打出那种“冷峻”的蓝光，我们使用了两盏 SkyPanel...</p>
     </div>
-
     <div id="article-ue5-tech">
         <h2>UE5 虚拟制片：Lumen 光照测试</h2>
-        <div class="meta">TOOL: Unreal Engine 5.2 | FOCUS: Lighting & Optimization</div>
         <img src="https://images.unsplash.com/photo-1614726365723-49cfae96c692?q=80&w=800" alt="UE5截图">
-        <p>这是我在学习 Technical Art 过程中的一次实验。目标是测试在没有任何 Lightmap 烘焙的情况下，Lumen 全动态光照对室内场景的帧率影响。</p>
-        <h3>技术难点</h3>
-        <p>1. 镜面反射的噪点控制。<br>2. Nanite 几何体与树叶材质的兼容性。</p>
-        <h3>解决方案</h3>
-        <p>我调整了 PostProcessVolume 中的 Final Gather Quality 参数，将其从默认的 1.0 提升至 2.0，虽然牺牲了 5fps，但噪点明显减少...</p>
+        <p>这是我在学习 Technical Art 过程中的一次实验...</p>
     </div>
-
 </div>
 
 <script>
-    // --- 1. 打字机特效 ---
+    // --- 1. 动态星空逻辑 (HTML5 Canvas) ---
+    const canvas = document.getElementById('canvas-container');
+    const ctx = canvas.getContext('2d');
+    let width, height, stars = [];
+    
+    function initHeader() {
+        width = window.innerWidth;
+        height = window.innerHeight / 2; // 只要一半高度
+        canvas.width = width;
+        canvas.height = height;
+        
+        stars = [];
+        for(let i = 0; i < width * 0.2; i++) { // 星星数量
+            stars.push(new Star());
+        }
+    }
+    
+    class Star {
+        constructor() {
+            this.x = Math.random() * width;
+            this.y = Math.random() * height;
+            this.size = Math.random() * 2;
+            this.speedX = (Math.random() - 0.5) * 0.5;
+            this.speedY = (Math.random() - 0.5) * 0.5;
+            this.alpha = Math.random();
+        }
+        draw() {
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            // 边界检查，跑出去了就从对面回来
+            if (this.x < 0) this.x = width;
+            if (this.x > width) this.x = 0;
+            if (this.y < 0) this.y = height;
+            if (this.y > height) this.y = 0;
+            
+            // 简单的闪烁
+            this.alpha += (Math.random() - 0.5) * 0.1;
+            if (this.alpha < 0) this.alpha = 0;
+            if (this.alpha > 1) this.alpha = 1;
+        }
+    }
+    
+    function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for(let star of stars) {
+            star.update();
+            star.draw();
+        }
+        requestAnimationFrame(animate);
+    }
+    
+    // 鼠标交互
+    let mouse = { x: -1000, y: -1000 };
+    window.addEventListener('mousemove', (e) => {
+        // 简单的鼠标光晕效果 (画一个跟随鼠标的淡淡光圈)
+        // 注意：这里因为是分层渲染，我们在 animate 里处理会更复杂
+        // 这里我们简化，只做星星自动漂浮
+    });
+    
+    window.addEventListener('resize', initHeader);
+    initHeader();
+    animate();
+
+    // --- 2. 打字机 ---
     const text = "你好，我是 Yunqi。这里是我的个人作品展示，包含我的短片、虚拟制作及更多项目。";
     const element = document.getElementById("typing-text");
     let index = 0;
@@ -259,16 +375,11 @@
             setTimeout(typeWriter, 80); 
         }
     }
-    window.onload = typeWriter;
+    typeWriter();
 
-    // --- 2. 筛选逻辑 ---
+    // --- 3. 筛选 & 弹窗逻辑 (与之前相同) ---
     function filterSelection(category) {
         var cards = document.getElementsByClassName("card");
-        var btns = document.getElementsByClassName("filter-btn");
-        
-        // 简单的按钮高亮逻辑
-        // (这里省略了复杂的 class 切换，保持代码简洁)
-
         for (var i = 0; i < cards.length; i++) {
             var cardCategory = cards[i].getAttribute("data-category");
             if (category == 'all' || cardCategory == category) {
@@ -278,40 +389,30 @@
             }
         }
     }
-
-    // --- 3. 视频播放逻辑 (支持 B站 / Youtube / MP4) ---
     function playVideo(source) {
-        if (!source) return;
+        if(!source) return;
         var modal = document.getElementById("video-modal");
         var container = document.querySelector(".video-container");
-        container.innerHTML = ""; // 清空
-
+        container.innerHTML = "";
         if (source.startsWith("BV")) {
-            // B站 (净化版)
             container.innerHTML = '<iframe src="https://player.bilibili.com/player.html?bvid=' + source + '&high_quality=1&danmaku=0&autoplay=1" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>';
         } else if (source.length === 11 && !source.includes(".")) {
-            // YouTube
             container.innerHTML = '<iframe src="https://www.youtube.com/embed/' + source + '?autoplay=1" width="100%" height="100%" frameborder="0" allowfullscreen></iframe>';
         } else {
-            // MP4
             container.innerHTML = '<video src="' + source + '" controls autoplay style="width:100%; height:100%; outline:none;"></video>';
         }
         modal.style.display = "flex";
     }
     function closeVideo() {
-        var modal = document.getElementById("video-modal");
-        modal.style.display = "none";
+        document.getElementById("video-modal").style.display = "none";
         document.querySelector(".video-container").innerHTML = "";
     }
-
-    // --- 4. 文章阅读逻辑 [NEW] ---
     function openArticle(articleId) {
         var modal = document.getElementById("article-modal");
         var contentArea = document.getElementById("article-content-area");
         var source = document.getElementById(articleId);
-        
         if (source) {
-            contentArea.innerHTML = source.innerHTML; // 复制内容
+            contentArea.innerHTML = source.innerHTML;
             modal.style.display = "flex";
             setTimeout(() => {
                 modal.style.opacity = "1";
@@ -329,4 +430,3 @@
 
 </body>
 </html>
-
